@@ -1,24 +1,38 @@
 {
-  "name": "APP PROJECT - Project Manager",
+  "name": "APP PROJECT - Compact 50% Best Icon",
   "short_name": "APP PROJECT",
-  "description": "Project Manager dengan IndexedDB, JSON Backup dan Google Sheets Backup",
-  "start_url": "./",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0b1120",
-  "theme_color": "#0f172a",
-  "orientation": "any",
+  "background_color": "#f1f5f9",
+  "theme_color": "#2563eb",
+  "description": "Project Manager Compact 50% central, IndexedDB, popup universal, on-top, best icon",
   "icons": [
     {
-      "src": "icons/icon-192.png",
+      "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     },
     {
-      "src": "icons/icon-512.png",
+      "src": "icon-192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512-maskable.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "maskable"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
     }
   ]
 }

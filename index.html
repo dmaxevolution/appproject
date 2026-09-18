@@ -1,106 +1,64 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0f172a">
-<meta name="description" content="APP PROJECT - Project Manager PWA">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>APP PROJECT - V5 Working</title>
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
-<title>APP PROJECT</title>
-<style>
-:root{--bg:#0b1120;--panel:#111827;--card:#172033;--line:#334155;--text:#f8fafc;--muted:#94a3b8;--p:#6366f1;--p2:#8b5cf6;--ok:#10b981;--warn:#f59e0b;--bad:#ef4444}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,#1b2b58 0,transparent 35%),var(--bg);color:var(--text);font:15px Inter,Segoe UI,Arial,sans-serif}
-button,input,textarea,select{font:inherit}.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
-.sidebar{background:rgba(15,23,42,.92);border-right:1px solid var(--line);padding:22px 16px;position:sticky;top:0;height:100vh}
-.logo{font-size:21px;font-weight:800;margin:4px 10px 32px}.logo b{color:#a5b4fc}.nav-title{font-size:11px;color:var(--muted);letter-spacing:1px;margin:24px 10px 8px}
-.nav button{display:block;width:100%;border:0;background:transparent;color:var(--muted);padding:12px;text-align:left;border-radius:10px;cursor:pointer}.nav button:hover{background:#1e293b;color:#fff}
-.main{padding:28px;max-width:1600px;width:100%;margin:auto}.top{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:24px}.top h1{margin:0;font-size:27px}.top p{margin:6px 0;color:var(--muted)}
-.status{padding:8px 12px;background:#111827;border:1px solid var(--line);border-radius:99px;color:var(--muted);white-space:nowrap}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--ok);margin-right:6px}
-.hero,.panel,.stat,.card{background:rgba(23,32,51,.88);border:1px solid var(--line);border-radius:18px}.hero{padding:22px;margin-bottom:20px;background:linear-gradient(135deg,rgba(99,102,241,.24),rgba(139,92,246,.1))}
-.row{display:flex;gap:12px;align-items:end;flex-wrap:wrap}.field{flex:1;min-width:220px}.field label{display:block;margin-bottom:7px;color:var(--muted);font-size:13px}
-input,textarea,select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:#0b1220;color:#fff}textarea{resize:vertical}
-.btn{border:0;border-radius:10px;padding:11px 14px;color:#fff;background:#263246;cursor:pointer;font-weight:650}.btn:hover{filter:brightness(1.12)}.primary{background:linear-gradient(135deg,var(--p),var(--p2))}.danger{background:#7f1d1d}.success{background:#065f46}.warning{background:#78350f}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}.stat{padding:18px}.stat .v{font-size:24px;font-weight:800;margin-top:8px}.muted{color:var(--muted)}
-.toolbar{display:flex;justify-content:space-between;gap:15px;align-items:center;margin:10px 0 16px}.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px}.card{padding:18px;transition:.2s}.card:hover{transform:translateY(-2px);border-color:#6366f1}.card.dragging{opacity:.4}.card-top{display:flex;gap:10px;align-items:center;margin-bottom:12px}.drag{color:var(--muted);cursor:move}.card-title{flex:1;font-weight:700}.iconbtn{border:0;background:transparent;color:#fca5a5;font-size:17px;cursor:pointer}
-.panel{padding:20px;margin-top:24px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}.backup-actions{display:flex;gap:10px;flex-wrap:wrap}.empty{text-align:center;padding:70px 20px;color:var(--muted)}
-.toastbox{position:fixed;right:20px;bottom:20px;z-index:99}.toast{margin-top:8px;background:#172033;border:1px solid var(--line);padding:13px 16px;border-radius:12px;box-shadow:0 12px 30px #0008}
-.modal{position:fixed;inset:0;background:#0009;display:none;align-items:center;justify-content:center;padding:20px;z-index:100}.modal.show{display:flex}.modalbox{width:min(620px,100%);background:#111827;border:1px solid var(--line);border-radius:18px;padding:22px}.modalbox h3{margin-top:0}.history{max-height:300px;overflow:auto}.history button{width:100%;display:flex;justify-content:space-between;margin:7px 0}
-@media(max-width:850px){.app{grid-template-columns:1fr}.sidebar{position:static;height:auto;display:flex;gap:5px;overflow:auto;padding:10px}.logo,.nav-title{display:none}.nav{display:flex}.nav button{white-space:nowrap}.main{padding:18px}.stats{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}}@media(max-width:500px){.stats{grid-template-columns:1fr}.main{padding:14px}.cards{grid-template-columns:1fr}}
-</style>
+<link rel="icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#2563eb">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="app">
-<aside class="sidebar">
-<div class="logo">◈ <b>APP</b> PROJECT</div>
-<div class="nav">
-<div class="nav-title">PROJECT</div>
-<button onclick="createProject()">＋ Project Baru</button>
-<button onclick="addCard()">＋ Tambah Komponen</button>
-<div class="nav-title">BACKUP</div>
-<button onclick="exportData()">⇩ Download JSON</button>
-<button onclick="fileImport.click()">⇧ Import JSON</button>
-<button onclick="backupGoogle()">☁ Backup Google</button>
-<button onclick="openHistory()">◷ Riwayat Backup</button>
-<button onclick="restoreGoogle()">↻ Restore Terbaru</button>
-<div class="nav-title">DATABASE</div>
-<button onclick="showInfo()">▣ Info IndexedDB</button>
-<button onclick="resetDatabase()">🗑 Reset Database</button>
+<div class="shell" id="shell">
+  <header class="topbar">
+    <div class="brand-row">
+      <div class="brand"><div class="logo">⚡</div><div><b>APP PROJECT</b><span>V6 Luxury Border</span></div></div>
+      <div class="top-controls">
+        <button id="darkBtn" class="icon-btn" onclick="toggleDark()" title="Dark Mode">🌙</button>
+        <div class="zoom-wrap"><span>🔍</span><input type="range" id="zoomRange" min="100" max="200" value="100" oninput="setZoom(this.value)"><b id="zoomVal">100%</b></div>
+        <button id="globalOnTopBtn" class="btn btn-xs btn-on-top" onclick="toggleGlobalOnTop()">📌 On Top</button>
+      </div>
+    </div>
+    <div class="tabs"><button id="tab1" class="tab active" onclick="switchTab(1)">📦 Project</button><button id="tab2" class="tab" onclick="switchTab(2)">☁️ Backup</button></div>
+  </header>
+  <div class="stats">
+    <div class="chip"><i>📁</i><b id="sActive">-</b><small>Active</small></div>
+    <div class="chip"><i>📊</i><b id="sTotalP">0</b><small>Projects</small></div>
+    <div class="chip"><i>🧩</i><b id="sTotalI">0</b><small>Items</small></div>
+    <div class="chip"><i>🕒</i><b id="sTime">-</b><small>Updated</small></div>
+  </div>
+  <div id="page1" class="page active">
+    <section class="card">
+      <div class="card-head">
+        <select id="projectSelect" onchange="switchProject()"></select>
+        <div class="head-actions">
+          <button class="btn btn-primary btn-xs" onclick="createNewProject()">+ Baru</button>
+          <button class="btn btn-danger btn-xs" onclick="deleteCurrentProject()">Hapus</button>
+        </div>
+      </div>
+      <input type="text" id="projectName" class="input input-title" placeholder="Nama Project..." oninput="updateProjectName()">
+      <div class="divider"></div>
+      <div class="card-head">
+        <h3>Komponen <small id="compCount">0</small></h3>
+        <div class="head-actions">
+          <button class="btn btn-primary btn-xs" onclick="addDynamicItem()">+ Komponen</button>
+          <button class="btn btn-success btn-xs" id="openAllBtn" onclick="executeAllUrlsDelayed()">📋 Salin Semua URL</button>
+          <span class="small muted" id="delayInfo"></span>
+        </div>
+      </div>
+      <div id="dynamicItemsContainer"></div>
+    </section>
+  </div>
+  <div id="page2" class="page">
+    <section class="card"><h3>☁️ Cloud Sync</h3><div class="form"><label>GAS Web App URL</label><input type="url" id="cloudUrl" placeholder="https://script.google.com/..." oninput="saveCloudUrlData()"><label style="margin-top:8px">API Key</label><input type="text" id="apiKey" placeholder="optional..." oninput="saveApiKey()"></div><div class="btns"><button class="btn btn-primary" onclick="syncToCloud()">☁️ Backup Cloud</button><button class="btn btn-secondary" onclick="exportJSON()">💾 JSON</button><button class="btn btn-secondary" onclick="exportCSV()">📄 CSV</button><button class="btn btn-success" onclick="exportPNG()">🖼️ PNG</button></div></section>
+    <section class="card"><h3>📥 Restore</h3><div class="btns"><label class="btn btn-info btn-sm filebtn">JSON<input type="file" accept=".json" onchange="importJSON(event)"></label><label class="btn btn-info btn-sm filebtn">CSV<input type="file" accept=".csv" onchange="importCSV(event)"></label><label class="btn btn-info btn-sm filebtn">PNG<input type="file" accept=".png" onchange="importPNG(event)"></label></div><div class="divider"></div><div class="small muted">V5 Working - Tombol semua sudah dites fungsi</div><div class="btns" style="margin-top:10px"><button class="btn btn-danger btn-sm" onclick="resetAll()">🗑️ Reset</button><button class="btn btn-secondary btn-sm" onclick="clearCache()">🧹 Clear Cache</button></div></section>
+  </div>
+  <footer class="foot">V6 Luxury - Border Mewah + Dark + OnTop • Compact 50% • OnTop Header • Move ▲▼ • Delay Open • Dark • Zoom</footer>
 </div>
-</aside>
-<main class="main">
-<header class="top"><div><h1>Project Manager</h1><p>IndexedDB lokal • JSON • Google Sheets backup • PWA</p></div><div class="status"><span class="dot"></span><span id="status">Memuat...</span></div></header>
-<section class="hero"><div class="row"><div class="field"><label>Project Aktif</label><select id="projectSelect" onchange="switchProject()"></select></div><button class="btn primary" onclick="createProject()">＋ Project</button><button class="btn danger" onclick="deleteProject()">Hapus</button></div></section>
-<section class="stats"><div class="stat"><div class="muted">Total Project</div><div class="v" id="projectCount">0</div></div><div class="stat"><div class="muted">Komponen Aktif</div><div class="v" id="cardCount">0</div></div><div class="stat"><div class="muted">Total Komponen</div><div class="v" id="totalCards">0</div></div><div class="stat"><div class="muted">Terakhir Update</div><div class="v" style="font-size:13px" id="lastUpdate">-</div></div></section>
-<div class="toolbar"><h2>Komponen Project</h2><button class="btn primary" onclick="addCard()">＋ Tambah Komponen</button></div>
-<section class="cards" id="cardsContainer"></section>
-<section class="panel"><h2>Backup & Sinkronisasi</h2><div class="grid2">
-<div><p class="muted">Google Apps Script Web App URL</p><input id="apiUrl" placeholder="https://script.google.com/macros/s/.../exec" onchange="saveSettings()"><p class="muted">API Key backup (simpan lokal browser).</p><input id="apiKey" type="password" placeholder="API key" onchange="saveSettings()"></div>
-<div><p class="muted">Backup cloud menyimpan riwayat beberapa versi. IndexedDB tetap menjadi penyimpanan utama.</p><div class="backup-actions"><button class="btn success" onclick="backupGoogle()">☁ Backup Sekarang</button><button class="btn warning" onclick="openHistory()">◷ Pilih Versi</button><button class="btn" onclick="restoreGoogle()">↻ Restore Terbaru</button></div><p class="muted" id="cloudStatus"></p></div>
-</div></section>
-</main></div>
-<input id="fileImport" type="file" accept=".json" hidden onchange="importData(event)">
-<div class="toastbox" id="toastbox"></div>
-<div class="modal" id="historyModal"><div class="modalbox"><div class="row" style="justify-content:space-between;align-items:center"><h3>Riwayat Backup Google</h3><button class="btn" onclick="closeHistory()">Tutup</button></div><div id="historyList" class="history"></div></div></div>
-
-<script>
-const DB_NAME='APP_PROJECT_DATABASE_V2', STORE='state', SETTINGS='settings';
-let db, currentProject, appData;
-const defaultData=()=>({version:2,activeProject:'Default Project',lastUpdate:null,projects:{'Default Project':[
-{id:uid(),title:'Multi URL',type:'urls',content:'https://github.com\nhttps://google.com'},
-{id:uid(),title:'Folder Project',type:'text',content:'D:\\Projects\\AppProject'},
-{id:uid(),title:'Catatan',type:'textarea',content:'Catatan project'}
-]}});
-function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
-function openDB(){return new Promise((resolve,reject)=>{const r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=e=>{const d=e.target.result;if(!d.objectStoreNames.contains(STORE))d.createObjectStore(STORE);if(!d.objectStoreNames.contains(SETTINGS))d.createObjectStore(SETTINGS)};r.onsuccess=e=>{db=e.target.result;resolve()};r.onerror=()=>reject(r.error)})}
-function tx(store,mode,key,val){return new Promise((resolve,reject)=>{const t=db.transaction(store,mode),s=t.objectStore(store);const r=mode==='readonly'?s.get(key):s.put(val,key);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)})}
-async function init(){try{await openDB();appData=await tx(STORE,'readonly','main')||defaultData();currentProject=appData.activeProject||Object.keys(appData.projects)[0];const set=await tx(SETTINGS,'readonly','google')||{};apiUrl.value=set.url||'';apiKey.value=set.key||'';renderAll();status.textContent='IndexedDB Ready';if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js')}catch(e){console.error(e);toast('Gagal membuka IndexedDB','bad')}}
-async function save(){appData.activeProject=currentProject;appData.lastUpdate=new Date().toLocaleString('id-ID');await tx(STORE,'readwrite','main',appData);updateStats()}
-async function saveSettings(){await tx(SETTINGS,'readwrite','google',{url:apiUrl.value.trim(),key:apiKey.value.trim()});toast('Pengaturan Google disimpan')}
-function renderAll(){renderProjects();renderCards();updateStats()}
-function renderProjects(){projectSelect.innerHTML='';Object.keys(appData.projects).forEach(n=>{const o=document.createElement('option');o.value=n;o.textContent=n;o.selected=n===currentProject;projectSelect.append(o)})}
-async function switchProject(){currentProject=projectSelect.value;await save();renderCards()}
-async function createProject(){const n=prompt('Nama project baru:');if(!n)return;if(appData.projects[n])return toast('Nama project sudah ada','bad');appData.projects[n]=[];currentProject=n;await save();renderAll();toast('Project dibuat')}
-async function deleteProject(){const keys=Object.keys(appData.projects);if(keys.length<2)return toast('Minimal satu project','bad');if(!confirm('Hapus '+currentProject+'?'))return;delete appData.projects[currentProject];currentProject=Object.keys(appData.projects)[0];await save();renderAll()}
-async function addCard(){const pick=prompt('1=Multi URL\n2=Text/Folder\n3=URL\n4=Catatan','1');const map={'1':['urls','Multi URL'],'2':['text','Folder / Text'],'3':['url','URL Hosting'],'4':['textarea','Catatan']};const [type,title]=map[pick]||map['1'];appData.projects[currentProject].push({id:uid(),title,type,content:''});await save();renderCards()}
-function renderCards(){const c=cardsContainer, cards=appData.projects[currentProject]||[];c.innerHTML='';if(!cards.length){c.innerHTML='<div class="empty">Belum ada komponen. Klik <b>Tambah Komponen</b>.</div>';return}cards.forEach((card,i)=>{const el=document.createElement('article');el.className='card';el.draggable=true;el.dataset.index=i;let body=card.type==='textarea'||card.type==='urls'?`<textarea rows="${card.type==='urls'?6:7}" data-content>${esc(card.content)}</textarea>`:`<input data-content type="${card.type==='url'?'url':'text'}" value="${attr(card.content)}">`;let action='';if(card.type==='urls')action='<button class="btn primary" data-action="openall">Buka Semua URL</button>';if(card.type==='url')action='<button class="btn primary" data-action="open">Buka URL</button>';if(card.type==='text')action='<button class="btn" data-action="copy">Copy</button>';el.innerHTML=`<div class="card-top"><span class="drag">⋮⋮ Drag</span><input class="card-title" data-title value="${attr(card.title)}"><button class="iconbtn" data-action="delete">✕</button></div><div>${body}</div><div style="margin-top:12px">${action}</div>`;el.querySelector('[data-title]').onchange=async e=>{card.title=e.target.value;await save()};el.querySelector('[data-content]').onchange=async e=>{card.content=e.target.value;await save()};el.querySelectorAll('[data-action]').forEach(b=>b.onclick=()=>cardAction(b.dataset.action,card));dragEvents(el);c.append(el)})}
-async function cardAction(a,card){if(a==='delete'){appData.projects[currentProject]=appData.projects[currentProject].filter(x=>x.id!==card.id);await save();renderCards()}if(a==='copy'){await navigator.clipboard.writeText(card.content||'');toast('Tersalin')}if(a==='open'){openOne(card.content)}if(a==='openall')(card.content||'').split(/\n/).map(x=>x.trim()).filter(Boolean).forEach(openOne)}
-function openOne(u){if(!/^https?:\/\//i.test(u))u='https://'+u;window.open(u,'_blank','noopener')}
-let dragIndex=null;function dragEvents(el){el.ondragstart=()=>{dragIndex=+el.dataset.index;el.classList.add('dragging')};el.ondragend=()=>el.classList.remove('dragging');el.ondragover=e=>e.preventDefault();el.ondrop=async e=>{e.preventDefault();const to=+el.dataset.index;if(dragIndex===null||dragIndex===to)return;const a=appData.projects[currentProject],m=a.splice(dragIndex,1)[0];a.splice(to,0,m);await save();renderCards()}}
-function updateStats(){const all=Object.values(appData.projects).flat().length;projectCount.textContent=Object.keys(appData.projects).length;cardCount.textContent=(appData.projects[currentProject]||[]).length;totalCards.textContent=all;lastUpdate.textContent=appData.lastUpdate||'-';cloudStatus.textContent=apiUrl.value?'Endpoint Google siap dikonfigurasi':'Masukkan URL Google Apps Script'}
-function exportData(){const b=new Blob([JSON.stringify(appData,null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=`APP_PROJECT_BACKUP_${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(u);toast('Backup JSON dibuat')}
-function importData(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=async()=>{try{const x=JSON.parse(r.result);appData=normalizeBackup(x);currentProject=appData.activeProject||Object.keys(appData.projects)[0];await save();renderAll();toast('Restore JSON berhasil')}catch(err){console.error(err);toast('Restore gagal: '+err.message,'bad')}};r.readAsText(f);e.target.value=''}
-function normalizeBackup(x){if(x.projects&&!Array.isArray(x.projects))return x;if(x.projects&&Array.isArray(x.projects)){const p={};x.projects.forEach((q,i)=>{const n=q.name||`Project ${i+1}`,a=[];if(q.folder)a.push({id:uid(),title:'Folder Project',type:'text',content:q.folder});if(q.urls)a.push({id:uid(),title:'Multi URL',type:'urls',content:q.urls});if(q.hostingUrl)a.push({id:uid(),title:'URL Hosting',type:'url',content:q.hostingUrl});if(q.notes)a.push({id:uid(),title:'Catatan',type:'textarea',content:q.notes});p[n]=a});return {version:2,activeProject:Object.keys(p)[x.activeProjectIndex||0],lastUpdate:new Date().toLocaleString('id-ID'),projects:p}}throw new Error('Format backup tidak dikenali')}
-function googleConfig(){const url=apiUrl.value.trim(),key=apiKey.value.trim();if(!url||!key)throw new Error('Isi URL dan API Key Google terlebih dahulu');return{url,key}}
-async function backupGoogle(){try{await saveSettings();const {url,key}=googleConfig();toast('Mengirim backup...');const r=await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'backup',key,data:appData})});const x=await r.json();if(!x.success)throw new Error(x.message);toast('Backup Google berhasil')}catch(e){toast(e.message,'bad')}}
-async function restoreGoogle(){try{if(!confirm('Data lokal akan diganti dengan backup terbaru. Lanjutkan?'))return;const {url,key}=googleConfig();const r=await fetch(url+'?action=restore&key='+encodeURIComponent(key));const x=await r.json();if(!x.success)throw new Error(x.message);appData=normalizeBackup(x.data);currentProject=appData.activeProject||Object.keys(appData.projects)[0];await save();renderAll();toast('Restore Google berhasil')}catch(e){toast(e.message,'bad')}}
-async function openHistory(){historyModal.classList.add('show');historyList.innerHTML='<p class="muted">Memuat riwayat...</p>';try{const{url,key}=googleConfig();const r=await fetch(url+'?action=history&key='+encodeURIComponent(key));const x=await r.json();if(!x.success)throw new Error(x.message);historyList.innerHTML='';x.items.forEach(item=>{const b=document.createElement('button');b.className='btn';b.innerHTML=`<span>${esc(item.date)}</span><span>${item.projects} project</span>`;b.onclick=()=>restoreVersion(item.id);historyList.append(b)});if(!x.items.length)historyList.innerHTML='<p class="muted">Belum ada backup.</p>'}catch(e){historyList.innerHTML='<p>'+esc(e.message)+'</p>'}}
-function closeHistory(){historyModal.classList.remove('show')}
-async function restoreVersion(id){try{const{url,key}=googleConfig();const r=await fetch(url+`?action=restore&id=${encodeURIComponent(id)}&key=${encodeURIComponent(key)}`);const x=await r.json();if(!x.success)throw new Error(x.message);if(!confirm('Restore versi '+id+'?'))return;appData=normalizeBackup(x.data);currentProject=appData.activeProject||Object.keys(appData.projects)[0];await save();renderAll();closeHistory();toast('Versi backup dipulihkan')}catch(e){toast(e.message,'bad')}}
-function showInfo(){alert(`Database: ${DB_NAME}\nProject: ${Object.keys(appData.projects).length}\nTotal komponen: ${Object.values(appData.projects).flat().length}\nVersi data: ${appData.version||1}`)}
-async function resetDatabase(){if(!confirm('Semua data IndexedDB akan dihapus. Lanjutkan?'))return;await tx(STORE,'readwrite','main',defaultData());appData=defaultData();currentProject='Default Project';await save();renderAll();toast('Database direset','bad')}
-function toast(msg,type='ok'){const d=document.createElement('div');d.className='toast';d.textContent=msg;toastbox.append(d);setTimeout(()=>d.remove(),3500)}
-function esc(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML}function attr(s){return esc(s).replace(/"/g,'&quot;')}
-window.addEventListener('load',init);
-</script>
-</body></html>
+<div id="popupOverlay" class="overlay hidden"><div id="popupBox" class="popup"><div class="popup-head" id="popupDrag"><div class="ph-left"><div class="ph-icon">⧉</div><div><b id="popupTitle">Editor</b><small id="popupSub">drag • Pin Top</small></div></div><div class="ph-right"><button id="onTopBtn" class="btn btn-xs btn-on-top" onclick="toggleOnTop()">📌 Pin</button><button class="btn btn-xs" onclick="closePopup()">✕</button></div></div><div class="popup-meta"><input id="popupLabel" class="input input-xs" style="width:38%" placeholder="Label"><select id="popupType" class="input input-xs" style="flex:1"><option value="url">URL</option><option value="folder">Folder</option><option value="text">Teks</option><option value="code">Code</option><option value="json">JSON</option><option value="note">Note</option></select><span id="popupChar" class="muted small">0</span></div><textarea id="popupValue" class="popup-textarea" placeholder="Paste kode panjang..."></textarea><div class="popup-foot"><div class="left"><button class="btn btn-xs btn-secondary" onclick="closePopup()">Tutup</button><button class="btn btn-xs btn-black" onclick="copyPopup()">Copy All</button></div><div class="right"><button class="btn btn-xs btn-primary" onclick="savePopup()">Simpan</button></div></div></div></div>
+<button id="fabOnTop" class="fab hidden" onclick="toggleOnTop()">📌 On Top</button>
+<script src="app.js"></script>
+</body>
+</html>
