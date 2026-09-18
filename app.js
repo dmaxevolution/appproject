@@ -325,10 +325,23 @@ function openPopup(idx){
   document.getElementById('fabOnTop').classList.remove('hidden');
 }
 function closePopup(){
+  if(isOnTop){ return; }
   document.getElementById('popupOverlay').classList.add('hidden');
-  document.getElementById('fabOnTop').classList.add('hidden');
+  const fab=document.getElementById('fabOnTop');
+  if(fab) fab.classList.add('hidden');
   currentEditId=null;
 }
+function forceClosePopup(){
+  document.getElementById('popupOverlay').classList.remove('pin-mode');
+  document.getElementById('popupOverlay').classList.add('hidden');
+  document.getElementById('popupBox').classList.remove('on-top','pinned');
+  isOnTop=false;
+  const fab=document.getElementById('fabOnTop');
+  if(fab){ fab.classList.add('hidden'); fab.classList.remove('on'); }
+  currentEditId=null;
+  const btn=document.getElementById('onTopBtn'); if(btn) btn.textContent='📌 Pin';
+}
+
 function copyPopup(){
   const v=document.getElementById('popupValue').value;
   navigator.clipboard.writeText(v).then(()=>alert("Copied "+v.length+" char"));
@@ -341,17 +354,27 @@ async function savePopup(){
   it.value=document.getElementById('popupValue').value;
   await save(); loadProject(); closePopup();
 }
+
 function toggleOnTop(){
   const box=document.getElementById('popupBox');
+  const overlay=document.getElementById('popupOverlay');
   isOnTop=!isOnTop;
   if(isOnTop){
     box.classList.add('on-top','pinned');
-    document.getElementById('onTopBtn').textContent='📌 ON';
-    document.getElementById('fabOnTop').classList.add('on');
+    overlay.classList.add('pin-mode'); // biar background transparan & gak nutup
+    document.getElementById('onTopBtn').textContent='📌 ON TOP';
+    document.getElementById('onTopBtn').style.background='#10b981';
+    document.getElementById('onTopBtn').style.color='#fff';
+    const fab=document.getElementById('fabOnTop');
+    if(fab){ fab.classList.add('on'); fab.textContent='📌 ON TOP - Popup di depan'; }
   }else{
     box.classList.remove('on-top','pinned');
+    overlay.classList.remove('pin-mode');
     document.getElementById('onTopBtn').textContent='📌 Pin';
-    document.getElementById('fabOnTop').classList.remove('on');
+    document.getElementById('onTopBtn').style.background='';
+    document.getElementById('onTopBtn').style.color='';
+    const fab=document.getElementById('fabOnTop');
+    if(fab){ fab.classList.remove('on'); fab.textContent='📌 On Top'; }
   }
 }
 function toggleGlobalOnTop(){
@@ -360,11 +383,46 @@ function toggleGlobalOnTop(){
   if(isGlobalOnTop){
     tb.classList.add('on-top');
     document.getElementById('globalOnTopBtn').textContent='📌 On Top ON';
+    document.getElementById('globalOnTopBtn').style.background='#10b981';
+    document.getElementById('globalOnTopBtn').style.color='#fff';
   }else{
     tb.classList.remove('on-top');
     document.getElementById('globalOnTopBtn').textContent='📌 On Top';
+    document.getElementById('globalOnTopBtn').style.background='';
+    document.getElementById('globalOnTopBtn').style.color='';
   }
 }
+// Klik overlay gak nutup kalau lagi PIN mode
+function closePopup(){
+  if(isOnTop){ return; }
+  document.getElementById('popupOverlay').classList.add('hidden');
+  const fab=document.getElementById('fabOnTop');
+  if(fab) fab.classList.add('hidden');
+  currentEditId=null;
+}
+function forceClosePopup(){
+  document.getElementById('popupOverlay').classList.remove('pin-mode');
+  document.getElementById('popupOverlay').classList.add('hidden');
+  document.getElementById('popupBox').classList.remove('on-top','pinned');
+  isOnTop=false;
+  const fab=document.getElementById('fabOnTop');
+  if(fab){ fab.classList.add('hidden'); fab.classList.remove('on'); }
+  currentEditId=null;
+  const btn=document.getElementById('onTopBtn'); if(btn) btn.textContent='📌 Pin';
+}
+
+function forceClosePopup(){
+  // Dipakai tombol X saja
+  document.getElementById('popupOverlay').classList.remove('pin-mode');
+  document.getElementById('popupOverlay').classList.add('hidden');
+  document.getElementById('popupBox').classList.remove('on-top','pinned');
+  isOnTop=false;
+  const fab=document.getElementById('fabOnTop');
+  if(fab){ fab.classList.add('hidden'); fab.classList.remove('on'); }
+  currentEditId=null;
+  document.getElementById('onTopBtn').textContent='📌 Pin';
+}
+
 function toggleDark(){
   appData.dark=!appData.dark;
   document.body.classList.toggle('dark',appData.dark);
